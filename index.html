@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>                   The Juggernaut</title>
+</head>
+
+<body><style>
+  .title-right {
+    text-align: right;
+  }
+</style>
+
+<h2 class="title-right"><p style="color: lightblue">The Juggernaut</p></h2>
+  <link rel="stylesheet" href="style.css">
+  
+  <div id="homepage" class="homepage left"><style>
+    .text-left {
+      text-align: left;
+      
+    }
+  </style><h3 class="text-right">The evolution of democracy is here. Digital Democracy is here.Ever felt tired of the outcomes of physical voting. 
+  </h3></div><h3>Say no more, because with The Juggernaut, you can now vote online, with everything, everywhere, all at once!</h3>
+  
+  
+  
+  
+</body>
+
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  /* Sidebar styles */
+  .sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: skyblue;
+    padding-top: 20px;
+    transition: 0.3s; /* smooth animation */
+    overflow-x: hidden;
+  }
+
+  /* Sidebar hidden */
+  .sidebar.closed {
+    width: 0;
+    padding-top: 0;
+  }
+
+  /* Menu items */
+  .sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+  }
+
+  /* Hover effect */
+  .sidebar a:hover {
+    background-color: #575757;
+  }
+
+  /* Main content */
+  .main-content {
+    margin-left: 200px;
+    padding: 20px;
+    transition: 0.3s;
+  }
+
+  /* Main content expands when sidebar is closed */
+  .main-content.expanded {
+    margin-left: 0;
+  }
+
+  /* Toggle button */
+  .toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background-color: skyblue;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- Toggle Button -->
+<button class="toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
+
+<!-- Sidebar Menu -->
+<div id="mySidebar" class="sidebar closed">
+  <a href="#home">Home</a>
+  <ul class="menu">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="signup.html">Sign Up</a></li>
+</ul>
+  <ul class="menu">
+  <li><a href="login.html">Log In</a></li>
+</ul>
+  <ul class="menu">
+  <li><a href="proposals.html">Proposals</a></li>
+  </ul>
+  <ul class="menu"><li><a href="discussions.html">Discussions</a></li></ul>
+  <ul class="menu"><li><a href="adminpanel.html">Admin Panel</a></li></ul>
+  <ul class="menu"><li><a href="votes.html">Votes</a></li></ul>
+  <ul class="menu"><li><a href="votingcharts.html">Voting Charts</a></li></ul>
+</div>
+
+
+<script>
+  function toggleSidebar() {
+    document.getElementById("mySidebar").classList.toggle("closed");
+    document.getElementById("mainContent").classList.toggle("expanded");
+  }
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+<button onclick="window.location.href='signup.html'">Sign Up</button>
