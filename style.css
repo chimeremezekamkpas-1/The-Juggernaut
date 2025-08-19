@@ -1,0 +1,81 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: #0a1930;
+  color: white;
+}
+
+header {
+  background-color: #122c54;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav a {
+  color: #a0c4ff;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.hero {
+  background-color: #1e3a63;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero-text h2 {
+  font-size: 2em;
+}
+
+.cta-button {
+  margin-top: 20px;
+  display: inline-block;
+  background-color: #3f80ea;
+  padding: 12px 24px;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.features {
+  padding: 40px 20px;
+  background-color: #0f2646;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.steps h3 {
+  margin-button: 5px;
+}
+
+button {
+  padding: 12px;
+  background-color: #3f80ea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+
+
+
+
+
+
+
+
+.discussion-box {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
