@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Account</title>
+    <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #0a1930; }
+    .container { max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h2 { color: darkblue; }
+    .section { margin-top: 20px; }
+    .section h3 { color: darkblue; margin-bottom: 10px; }
+    .list { background: #f1f1f1; padding: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Student Account</h2>
+    <div id="studentInfo">
+      <p><strong>Name:</strong> <span id="studentName"></span></p>
+      <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+      <p><strong>Department:</strong> <span id="studentDept"></span></p>
+      <p><strong>Faculty:</strong> <span id="studentFaculty"></span></p>
+    </div>
+
+    <div class="section">
+      <h3>Voting History</h3>
+      <div id="votingHistory" class="list">Loading...</div>
+    </div>
+
+    <div class="section">
+      <h3>Proposals</h3>
+      <div id="proposalHistory" class="list">Loading...</div>
+    </div>
+
+    <div class="section">
+      <h3>Discussions</h3>
+      <div id="discussionHistory" class="list">Loading...</div>
+    </div>
+
+    <div class="section" id="adminPanel" style="display: none;">
+      <h3>Admin Panel Activities</h3>
+      <div id="adminHistory" class="list">Loading...</div>
+    </div>
+
+    <button onclick="logOut()">Log Out</button>
+  </div>
+
+  <script>
+    // Your Firebase config goes here
+    const firebaseConfig = { 
+      apiKey: "YOUR-API-KEY",
+      authDomain: "YOUR-PROJECT.firebaseapp.com",
+      projectId: "YOUR-PROJECT-ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        // Load student info
+        document.getElementById("studentEmail").innerText = user.email;
+
+        // Get extra details from Firestore "users" collection
+        const userDoc = await db.collection("users").doc(user.uid).get();
+        if (userDoc.exists) {
+          const data = userDoc.data();
+          document.getElementById("studentName").innerText = data.name || "N/A";
+          document.getElementById("studentDept").innerText = data.department || "N/A";
+          document.getElementById("studentFaculty").innerText = data.faculty || "N/A";
+
+          // Voting history
+          loadList("votes", user.uid, "votingHistory");
+
+          // Proposals
+          loadList("proposals", user.uid, "proposalHistory");
+
+          // Discussions
+          loadList("discussions", user.uid, "discussionHistory");
+
+          // Admin (only if role == admin)
+          if (data.role === "admin") {
+            document.getElementById("adminPanel").style.display = "block";
+            loadList("adminLogs", user.uid, "adminHistory");
+          }
+        }
+      } else {
+        alert("Please log in first.");
+        window.location.href = "login.html"; // Redirect to login page
+      }
+    });
+
+    // Load history lists from Firestore
+    async function loadList(collection, uid, elementId) {
+      const snapshot = await db.collection(collection).where("userId", "==", uid).get();
+      let html = "";
+      snapshot.forEach(doc => {
+        html += `<p>• ${JSON.stringify(doc.data())}</p>`;
+      });
+      document.getElementById(elementId).innerHTML = html || "No records found.";
+    }
+
+    function logOut() {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    }
+  </script>
+</body>
+</html>
