@@ -29,5 +29,44 @@
 
 <h4>Already have an account?</h4>
 <ul class="menu">
-  <li><a href="login.html">Log In</a></li>
-</ul>
+  <li><a href="login.html">Log In</a></li></ul>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+<script>
+  // Paste your Firebase config here
+  const firebaseConfig = { /* from Firebase Console */ };
+  firebase.initializeApp(firebaseConfig);
+
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  async function signUp() {
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    try {
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+      // Save extra info in Firestore
+      await db.collection("users").doc(user.uid).set({
+        email: user.email,
+        createdAt: new Date()
+      });
+      alert("Signed up successfully!");
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  async function logIn() {
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      alert("Logged in successfully!");
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+</script>
