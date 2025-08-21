@@ -144,8 +144,7 @@ loginForm.addEventListener("submit", function(e) {
 
 // Update votes (one per user per proposal)
 function changeVote(id, amount) {
-  if (!currentUser) {
-    alert("You must log in to vote!");
+  if (!currentUser)
     return;
   }
 
