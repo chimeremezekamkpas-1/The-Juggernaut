@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+  
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCzJ1iZpPexMeIsQQuumkpZx5xwI80tirU",
+    authDomain: "the-juggernaut-b7d4b.firebaseapp.com",
+    projectId: "the-juggernaut-b7d4b",
+    storageBucket: "the-juggernaut-b7d4b.firebasestorage.app",
+    messagingSenderId: "343650552263",
+    appId: "1:343650552263:web:81920439063b708dd8f1e2"
+  };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
+  <title>The Juggernaut</title>
+  <link href="style.css" rel="stylesheet"/>
+</head>
+
+<body><style>
+  .title-right {
+    text-align: right;
+  }
+</style>
+ <header>
+   <h2 class="title-right">The Juggernaut</h2>
+ </header>
+ 
+ <section class="hero">
+   <div class="hero-text">
+     <h2>Secure. Simple. Your Voice Counts.</h2>
+     <button onclick="window.location.href='signup.html'">Get Started</button>
+     </div>
+    </section>
+    
+    <section class="features">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <h3>Step 1: Sign Up</h3>
+          <p>Create an account with your full name and your valid email address.</p>
+          </div>
+          <div class="step">
+            <h3>Step 2: Verify Your ID</h3>
+            <p>Upload your student ID or any accepted form of identification</p>
+            </div>
+            <div class="step">
+              <h3>Step 3: Submit & Confirm</h3>
+              <p>Review your details and submit. You'll receive a confirmation via email.</p>
+              </div>
+            </div>
+          </section>
+          
+          <section class="contact">
+            <h2>Contact Us</h2>
+            <p>Email: <a href="malito: chimeremezekamkpas@gmail.com">chimeremezekamkpas@gmail.com</a></p>
+            <p>Address: Imo State University, Owerri</p>
+            <iframe src="https://maps.google.com?q=Imo+State+University+Owerri& output=embed" width="100%" height=200" style="border:0; allowfullscreen="" loading="lazy"></iframe>
+            </section>
+            
+            
+            
+            <footer>
+              <p>© 2025 The Juggernaut. All rights reserved.</p>
+              </footer>
+             </body>
+             </html>
+              
+             
+            
+          
+         
+          
+</body>
+
+</html>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  /* Sidebar styles */
+  .sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #3f80ea;
+    padding-top: 20px;
+    transition: 0.3s; /* smooth animation */
+    overflow-x: hidden;
+  }
+
+  /* Sidebar hidden */
+  .sidebar.closed {
+    width: 0;
+    padding-top: 0;
+  }
+
+  /* Menu items */
+  .sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+  }
+
+  /* Hover effect */
+  .sidebar a:hover {
+    background-color: #575757;
+  }
+
+  /* Main content */
+  .main-content {
+    margin-left: 200px;
+    padding: 20px;
+    transition: 0.3s;
+  }
+
+  /* Main content expands when sidebar is closed */
+  .main-content.expanded {
+    margin-left: 0;
+  }
+
+  /* Toggle button */
+  .toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background-color: #3f80ea;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- Toggle Button -->
+<button class="toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
+
+<!-- Sidebar Menu -->
+<div id="mySidebar" class="sidebar closed">
+  <a href="#home">Home</a>
+  <ul class="menu">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="signup.html">Sign Up</a></li>
+</ul>
+  <ul class="menu">
+  <li><a href="login.html">Log In</a></li>
+</ul>
+  <ul class="menu">
+  <li><a href="account.html">Account</a></li> 
+  </ul>
+  <ul class="menu">
+  <li><a href="proposals.html">Proposals</a></li>
+  </ul>
+  <ul class="menu"><li><a href="discussions.html">Discussions</a></li></ul>
+  <ul class="menu"><li><a href="adminpanel.html">Admin Panel</a></li></ul>
+  <ul class="menu"><li><a href="votes.html">Votes</a></li></ul>
+  <ul class="menu"><li><a href="votingcharts.html">Voting Charts</a></li></ul>
+</div>
+
+
+<script>
+  function toggleSidebar() {
+    document.getElementById("mySidebar").classList.toggle("closed");
+    document.getElementById("mainContent").classList.toggle("expanded");
+  }
+</script>
+
+</body>
+</html>
