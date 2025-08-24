@@ -1,0 +1,98 @@
+// Submit a new proposal
+async function submitProposal() {
+  const user = auth.currentUser;
+  const errBox = document.getElementById('err');
+  errBox.textContent = '';
+
+  if (!user) { 
+    errBox.textContent = 'Please log in to submit a proposal.'; 
+    return; 
+  }
+
+  const title = document.getElementById('title').value.trim();
+  const desc = document.getElementById('desc').value.trim();
+
+  if (!title || !desc) { 
+    errBox.textContent = 'Title and description are required.'; 
+    return; 
+  }
+
+  const userDoc = await db.collection('users').doc(user.uid).get();
+  const profile = userDoc.exists ? userDoc.data() : {};
+
+  await db.collection('proposals').add({
+    title,
+    description: desc,
+    authorId: user.uid,
+    authorName: profile.name || user.email,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    upvotes: 0,
+    voters: [] // array of userIds who voted
+  });
+
+  document.getElementById('title').value = '';
+  document.getElementById('desc').value = '';
+}
+
+// Load proposals
+function loadProposals() {
+  const list = document.getElementById('proposalList');
+  list.innerHTML = '<p class="meta">Loading...</p>';
+
+  db.collection('proposals')
+    .orderBy('upvotes','desc')
+    .onSnapshot(snap => {
+      list.innerHTML = '';
+      if (snap.empty) {
+        list.innerHTML = '<p class="meta">No proposals yet.</p>';
+        return;
+      }
+      snap.forEach(doc => {
+  const p = doc.data();
+  const div = document.createElement('div');
+  div.className = 'proposal';
+  div.innerHTML = `
+    <div class="meta"><strong>${p.title}</strong> • by ${p.authorName}</div>
+    <div>${p.description}</div>
+    <div class="meta">Upvotes: ${p.upvotes || 0}</div>
+    <button class="vote-btn" onclick="upvoteProposal('${doc.id}')">Upvote</button>
+    <button onclick="goToDiscussion('${doc.id}','${encodeURIComponent(p.title)}')">Discuss</button>
+  `;
+  list.appendChild(div);
+});   
+
+function goToDiscussion(proposalId, title) {
+  window.location.href = `/discussions.html?id=${proposalId}&title=${title}`;
+}
+
+// Upvote proposal
+async function upvoteProposal(proposalId) {
+  const user = auth.currentUser;
+  if (!user) {
+    alert('You must be logged in to vote.');
+    return;
+  }
+
+  const ref = db.collection('proposals').doc(proposalId);
+  await db.runTransaction(async (t) => {
+    const doc = await t.get(ref);
+    if (!doc.exists) return;
+
+    const data = doc.data();
+    if (data.voters && data.voters.includes(user.uid)) {
+      alert('You already voted for this proposal.');
+      return;
+    }
+
+    t.update(ref, {
+      upvotes: (data.upvotes || 0) + 1,
+      voters: firebase.firestore.FieldValue.arrayUnion(user.uid)
+    });
+  });
+}
+
+document.getElementById('submitBtn').addEventListener('click', submitProposal);
+
+auth.onAuthStateChanged(user => {
+  loadProposals();
+});

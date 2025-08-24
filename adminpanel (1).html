@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin Panel</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <h1>Admin Panel</h1>
+
+  <h2>Add Candidate</h2>
+  <input id="candidateName" placeholder="Candidate name">
+  <button onclick="addCandidate()">Add</button>
+
+  <h2>Add Policy</h2>
+  <input id="policyTitle" placeholder="Policy title">
+  <button onclick="addPolicy()">Add</button>
+
+  <script src="/js/firebase-init.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+let currentProposalId = null;
+
+// Get proposal from URL query string
+const urlParams = new URLSearchParams(window.location.search);
+const preselectedId = urlParams.get('id');
+const preselectedTitle = urlParams.get('title');
+
+// Load proposals into dropdown
+async function loadProposals() {
+  const sel = document.getElementById('proposal');
+  sel.innerHTML = '';
+  const snap = await db.collection('proposals').orderBy('createdAt','desc').get();
+  if (snap.empty) {
+    const opt = document.createElement('option');
+    opt.textContent = 'No proposals yet';
+    opt.disabled = true;
+    sel.appendChild(opt);
+    return;
+  }
+  snap.forEach(doc => {
+  const p = doc.data();
+  const opt = document.createElement('option');
+  opt.value = doc.id;
+  opt.textContent = p.title || '(Untitled)';
+  sel.appendChild(opt);
+});
+
+// If user came from proposals page
+if (preselectedId) {
+  sel.value = preselectedId;
+  currentProposalId = preselectedId;
+  loadComments(preselectedId);
+} else {
+  // Default: select first proposal
+  currentProposalId = sel.value;
+  loadComments(currentProposalId);
+}
+  // select first
+  currentProposalId = sel.value;
+  loadComments(currentProposalId);
+
+  sel.addEventListener('change', e => {
+    currentProposalId = e.target.value;
+    loadComments(currentProposalId);
+  });
+}
+
+// Post new comment
+async function postComment() {
+  const user = auth.currentUser;
+  const errBox = document.getElementById('err');
+  errBox.textContent = '';
+
+  if (!user) { 
+    errBox.textContent = 'Please log in to post a comment.'; 
+    return; 
+  }
+  if (!currentProposalId) { 
+    errBox.textContent = 'Please select a proposal.'; 
+    return; 
+  }
+
+  const text = document.getElementById('comment').value.trim();
+  if (!text) { errBox.textContent = 'Enter a comment.'; return; }
+
+  const userDoc = await db.collection('users').doc(user.uid).get();
+  const profile = userDoc.exists ? userDoc.data() : {};
+
+  await db.collection('discussions').add({
+    proposalId: currentProposalId,
+    proposalTitle: document.querySelector(`#proposal option[value="${currentProposalId}"]`).textContent,
+    userId: user.uid,
+    userName: profile.name || user.email,
+    text,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  document.getElementById('comment').value = '';
+}
+
+// Load comments for a proposal
+function loadComments(proposalId) {
+  const container = document.getElementById('comments');
+  container.innerHTML = '<p class="meta">Loading...</p>';
+
+  db.collection('discussions')
+    .where('proposalId','==',proposalId)
+    .orderBy('createdAt','desc')
+    .onSnapshot(snap => {
+      container.innerHTML = '';
+      if (snap.empty) {
+        container.innerHTML = '<p class="meta">No comments yet.</p>';
+        return;
+      }
+      snap.forEach(doc => {
+        const c = doc.data();
+        const div = document.createElement('div');
+        div.className = 'comment';
+        div.innerHTML = `
+          <div class="meta"><strong>${c.userName}</strong> • ${c.createdAt?.toDate?.().toLocaleString() || ''}</div>
+          <div>${c.text}</div>
+        `;
+        container.appendChild(div);
+      });
+    });
+}
+
+document.getElementById('topic').textContent = preselectedTitle ? `– ${decodeURIComponent(preselectedTitle)}` : '';
+
+auth.onAuthStateChanged(user => {
+  loadProposals();
+});
